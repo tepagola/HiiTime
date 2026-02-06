@@ -9,7 +9,7 @@ import { Button } from './components/ui/button';
 import { Play } from 'lucide-react';
 
 function App() {
-    const { currentPlan, session, startSession } = usePlanStore();
+    const { currentPlan, session, startSession, isEditing, editPlan } = usePlanStore();
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ function App() {
 
     // Helper to determine view
     const renderView = () => {
-        if (!currentPlan) {
+        if (!currentPlan || isEditing) {
             return <PlanEditor />;
         }
 
@@ -48,11 +48,14 @@ function App() {
                         </div>
                     </div>
 
-                    <div className="flex-1" />
-
-                    <Button variant="giant" onClick={startSession} className="w-full bg-white text-black hover:bg-zinc-200 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
-                        <Play className="mr-3 h-8 w-8 fill-current" /> <span className="text-xl font-bold tracking-wide">START MISSION</span>
-                    </Button>
+                    <div className="w-full flex flex-col gap-3">
+                        <Button variant="giant" onClick={startSession} className="w-full bg-white text-black hover:bg-zinc-200 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                            <Play className="mr-3 h-8 w-8 fill-current" /> <span className="text-xl font-bold tracking-wide">START MISSION</span>
+                        </Button>
+                        <Button variant="outline" onClick={editPlan} className="w-full border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 py-4 h-auto">
+                            Edit Routine
+                        </Button>
+                    </div>
                 </div>
             );
         }

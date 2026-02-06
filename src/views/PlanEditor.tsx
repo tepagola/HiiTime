@@ -19,9 +19,24 @@ type FormValues = {
 };
 
 export const PlanEditor = () => {
-    const { savePlan } = usePlanStore();
+    const { currentPlan, savePlan, isNew } = usePlanStore();
+
     const { register, control, handleSubmit, formState: { errors } } = useForm<FormValues>({
-        defaultValues: {
+        defaultValues: isNew ? {
+            planName: '',
+            rounds: 3,
+            exercises: []
+        } : (currentPlan ? {
+            planName: currentPlan.name,
+            rounds: currentPlan.rounds,
+            exercises: currentPlan.exercises.map(ex => ({
+                id: ex.id,
+                name: ex.name,
+                type: ex.type,
+                duration: ex.duration || 45,
+                reps: ex.reps || 10
+            }))
+        } : {
             planName: '',
             rounds: 3,
             exercises: [
@@ -29,7 +44,7 @@ export const PlanEditor = () => {
                 { id: crypto.randomUUID(), name: 'Burpees', type: 'timer', duration: 30, reps: 0 },
                 { id: crypto.randomUUID(), name: 'Rest', type: 'rest', duration: 15, reps: 0 },
             ]
-        }
+        })
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -39,15 +54,17 @@ export const PlanEditor = () => {
 
     const onSubmit = (data: FormValues) => {
         const plan: Plan = {
-            id: crypto.randomUUID(),
+            id: currentPlan?.id || crypto.randomUUID(),
             name: data.planName,
             rounds: data.rounds,
-            createdAt: Date.now(),
+            createdAt: currentPlan?.createdAt || Date.now(),
             updatedAt: Date.now(),
             exercises: data.exercises.map(ex => ({
-                ...ex,
-                duration: ex.type === 'reps' ? undefined : ex.duration,
-                reps: ex.type === 'reps' ? ex.reps : undefined,
+                id: ex.id,
+                name: ex.name,
+                type: ex.type as ExerciseType,
+                duration: ex.type === 'reps' ? undefined : Number(ex.duration),
+                reps: ex.type === 'reps' ? Number(ex.reps) : undefined,
             }))
         };
         savePlan(plan);
@@ -95,7 +112,19 @@ export const PlanEditor = () => {
             {/* Exercises List */}
             <div className="space-y-4">
                 <div className="flex items-center justify-between px-2">
-                    <label className="text-xs font-mono uppercase tracking-widest text-zinc-500">Sequence</label>
+                    <div className="flex items-center gap-4">
+                        <label className="text-xs font-mono uppercase tracking-widest text-zinc-500">Sequence</label>
+                        {fields.length > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => remove()}
+                                className="text-[10px] font-mono uppercase tracking-tighter text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
+                            >
+                                <Trash2 size={12} />
+                                CLEAR ALL
+                            </button>
+                        )}
+                    </div>
                     <span className="text-xs text-zinc-600 font-mono">{fields.length} STATIONS</span>
                 </div>
 

@@ -13,9 +13,12 @@ interface SessionState {
 interface PlanStore {
     currentPlan: Plan | null;
     session: SessionState | null;
+    isEditing: boolean;
+    isNew: boolean;
 
     // Actions
     savePlan: (plan: Plan) => void;
+    editPlan: () => void;
     clearPlan: () => void;
     startSession: () => void;
     updateSession: (updates: Partial<SessionState>) => void;
@@ -35,16 +38,35 @@ export const usePlanStore = create<PlanStore>()(
         (set) => ({
             currentPlan: null,
             session: null,
+            isEditing: false,
+            isNew: false,
 
-            savePlan: (plan) => set({ currentPlan: plan, session: null }), // Reset session on new plan
+            savePlan: (plan) => set({
+                currentPlan: plan,
+                session: null,
+                isEditing: false,
+                isNew: false
+            }),
 
-            clearPlan: () => set({ currentPlan: null, session: null }),
+            editPlan: () => set({ isEditing: true }),
+
+            clearPlan: () => set({
+                currentPlan: null,
+                session: null,
+                isEditing: true,
+                isNew: true
+            }),
 
             startSession: () => set((state) => {
                 if (!state.currentPlan) return {};
-                // If session exists, resume it. Else create new.
-                if (state.session) return { session: { ...state.session, isPaused: false, isActive: true } };
-                return { session: { ...initialSession, isActive: true, isPaused: false } };
+                if (state.session) return {
+                    session: { ...state.session, isPaused: false, isActive: true },
+                    isEditing: false
+                };
+                return {
+                    session: { ...initialSession, isActive: true, isPaused: false },
+                    isEditing: false
+                };
             }),
 
             updateSession: (updates) => set((state) => ({
@@ -57,6 +79,10 @@ export const usePlanStore = create<PlanStore>()(
         }),
         {
             name: STORAGE_KEY,
+            partialize: (state) => ({
+                currentPlan: state.currentPlan,
+                session: state.session,
+            }),
         }
     )
 );
