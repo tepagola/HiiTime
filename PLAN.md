@@ -53,6 +53,15 @@ Defined in `src/types/models.ts`:
     *   **Load**: Al iniciar la app, validar presencia de data con schema Zod. Si falla, borrar y limpiar.
     *   **Delete**: Botón explícito "Nuevo Plan" borra la key.
 
-## 4. Diseño (A definir por @frontend-pwa)
-*   Componentes UI.
-*   Flujo de navegación.
+## 5. Próximas Fases (En desarrollo)
+
+### Fase 5: Internacionalización (EN/ES) - [ACTUAL]
+*   **Detección Automática**: Lógica para identificar el idioma del navegador/país y establecer ES/EN por defecto.
+*   **Selector Manual**: Componente en la UI para cambiar entre idiomas.
+*   **Traducciones**: Migración de todos los textos hardcoded a un sistema de claves.
+*   **Persistencia**: Guardar la preferencia en `localStorage`.
+
+### Fase 6: PWA & Calidad (Basado en QA Report)
+*   Fix manifest and service worker.
+*   SEO meta tags.
+*   A11y improvements.

@@ -4,10 +4,12 @@ import { Button } from '../components/ui/button';
 import { Play, Pause, SkipForward, CheckCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { soundManager } from '../lib/sounds';
+import { useTranslation } from '../lib/i18n';
 
 export const WorkoutRunner = () => {
     const { currentPlan, session, updateSession } = usePlanStore();
     const [timeLeft, setTimeLeft] = useState(0);
+    const { t } = useTranslation();
 
     // Refs for preventing double-fires if strict mode is on
     const timerRef = useRef<number | undefined>(undefined);
@@ -100,17 +102,17 @@ export const WorkoutRunner = () => {
             {/* Header / Info */}
             <div className="flex justify-between items-center py-4 mb-4">
                 <div>
-                    <span className="text-zinc-500 text-sm font-mono tracking-widest uppercase">Round</span>
+                    <span className="text-zinc-500 text-sm font-mono tracking-widest uppercase">{t('runner.round')}</span>
                     <div className="text-2xl font-bold font-mono">
                         {session.currentRound} <span className="text-zinc-600">/ {currentPlan.rounds}</span>
                     </div>
                 </div>
                 <div className="text-right">
-                    <span className="text-zinc-500 text-sm font-mono tracking-widest uppercase">Next</span>
+                    <span className="text-zinc-500 text-sm font-mono tracking-widest uppercase">{t('runner.next')}</span>
                     <div className="text-lg font-medium text-zinc-300 truncate max-w-[150px]">
                         {!isLastExercise
                             ? currentPlan.exercises[session.currentExerciseIndex + 1].name
-                            : (isLastRound ? 'Finish' : 'Next Round')}
+                            : (isLastRound ? t('runner.finish') : t('runner.round'))}
                     </div>
                 </div>
             </div>
@@ -185,7 +187,7 @@ export const WorkoutRunner = () => {
                                 currentExercise.type === 'timer' ? "bg-brand-accent" : "bg-orange-500"
                         )} />
                         <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-                            {currentExercise.type}
+                            {t(`editor.types.${currentExercise.type}`)}
                         </span>
                     </div>
                 </div>
@@ -200,7 +202,7 @@ export const WorkoutRunner = () => {
                         className="w-full bg-brand-neon text-black hover:bg-brand-neon/90 hover:scale-[1.02] transition-all shadow-[0_0_30px_-5px_var(--tw-colors-brand-neon)] border-none"
                     >
                         <CheckCircle className="mr-3 h-8 w-8" />
-                        <span className="text-2xl font-black tracking-wide">COMPLETE</span>
+                        <span className="text-2xl font-black tracking-wide">{t('runner.done')}</span>
                     </Button>
                 ) : (
                     <div className="grid grid-cols-5 gap-4">
@@ -218,7 +220,7 @@ export const WorkoutRunner = () => {
                                 {session.isPaused ? (
                                     <div className="flex items-center gap-3">
                                         <Play className="h-8 w-8 fill-current" />
-                                        <span className="text-xl font-bold">RESUME</span>
+                                        <span className="text-xl font-bold">{t('runner.go')}</span>
                                     </div>
                                 ) : (
                                     <Pause className="h-10 w-10 fill-current" />

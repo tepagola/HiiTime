@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { ExerciseType, Plan } from '../types/models';
 import { cn } from '../lib/utils';
+import { useTranslation } from '../lib/i18n';
 
 type FormValues = {
     planName: string;
@@ -20,6 +21,7 @@ type FormValues = {
 
 export const PlanEditor = () => {
     const { currentPlan, savePlan, isNew } = usePlanStore();
+    const { t } = useTranslation();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<FormValues>({
         defaultValues: isNew ? {
@@ -40,9 +42,7 @@ export const PlanEditor = () => {
             planName: '',
             rounds: 3,
             exercises: [
-                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Jump Rope', type: 'timer', duration: 45, reps: 0 },
-                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Burpees', type: 'timer', duration: 30, reps: 0 },
-                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Rest', type: 'rest', duration: 15, reps: 0 },
+                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: t('editor.placeholders.exerciseName'), type: 'timer', duration: 45, reps: 0 },
             ]
         })
     });
@@ -73,7 +73,7 @@ export const PlanEditor = () => {
     const addExercise = (type: ExerciseType) => {
         append({
             id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)),
-            name: type === 'rest' ? 'Rest' : 'New Exercise',
+            name: type === 'rest' ? t('editor.types.rest') : '',
             type,
             duration: type === 'rest' ? 30 : 45,
             reps: 10
@@ -86,10 +86,10 @@ export const PlanEditor = () => {
             <div className="space-y-6 bg-zinc-900/30 p-6 rounded-2xl border border-white/5 backdrop-blur-sm">
                 <div className="space-y-4">
                     <div>
-                        <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 block">Routine Name</label>
+                        <label className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 block">{t('editor.missionName')}</label>
                         <Input
                             {...register("planName", { required: true })}
-                            placeholder="e.g. Morning HIIT"
+                            placeholder={t('editor.missionNamePlaceholder')}
                             className="text-3xl font-bold bg-transparent border-none placeholder:text-zinc-700 p-0 h-auto focus-visible:ring-0 text-white"
                         />
                         {errors.planName && <span className="text-red-500 text-xs mt-1 block">A name is required for your mission.</span>}
@@ -97,7 +97,7 @@ export const PlanEditor = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <label className="text-xs font-mono uppercase tracking-widest text-zinc-500">Total Rounds</label>
+                        <label className="text-xs font-mono uppercase tracking-widest text-zinc-500">{t('editor.rounds')}</label>
                         <div className="flex items-center bg-zinc-800/50 rounded-lg p-1 border border-zinc-700">
                             <Input
                                 type="number"
@@ -121,11 +121,11 @@ export const PlanEditor = () => {
                                 className="text-[10px] font-mono uppercase tracking-tighter text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
                             >
                                 <Trash2 size={12} />
-                                CLEAR ALL
+                                {t('editor.clearAll')}
                             </button>
                         )}
                     </div>
-                    <span className="text-xs text-zinc-600 font-mono">{fields.length} STATIONS</span>
+                    <span className="text-xs text-zinc-600 font-mono">{fields.length} {t('editor.stations')}</span>
                 </div>
 
                 {fields.map((field, index) => (
@@ -141,7 +141,7 @@ export const PlanEditor = () => {
                                 <div className="flex items-center justify-between gap-3">
                                     <Input
                                         {...register(`exercises.${index}.name` as const, { required: true })}
-                                        placeholder="Exercise Name"
+                                        placeholder={t('editor.placeholders.exerciseName')}
                                         className="flex-1 bg-transparent border-none p-0 h-auto text-lg font-medium text-zinc-200 focus-visible:ring-0 placeholder:text-zinc-700"
                                     />
                                     <Button
@@ -165,7 +165,7 @@ export const PlanEditor = () => {
                                     )}>
                                         {field.type === 'rest' ? <Coffee size={10} /> :
                                             field.type === 'timer' ? <Clock size={10} /> : <Hash size={10} />}
-                                        {field.type}
+                                        {t(`editor.types.${field.type}`)}
                                     </div>
 
                                     <div className="h-4 w-px bg-zinc-800" />
@@ -201,17 +201,17 @@ export const PlanEditor = () => {
                 <div className="max-w-lg mx-auto space-y-4">
                     <div className="grid grid-cols-3 gap-2">
                         <Button type="button" variant="outline" onClick={() => addExercise('timer')} className="bg-zinc-900/80 border-zinc-800 hover:bg-zinc-800 hover:border-zinc-600 text-zinc-300">
-                            <Clock size={16} className="mr-2" /> Time
+                            <Clock size={16} className="mr-2" /> {t('editor.types.timer')}
                         </Button>
                         <Button type="button" variant="outline" onClick={() => addExercise('reps')} className="bg-zinc-900/80 border-zinc-800 hover:bg-zinc-800 hover:border-zinc-600 text-zinc-300">
-                            <Hash size={16} className="mr-2" /> Reps
+                            <Hash size={16} className="mr-2" /> {t('editor.types.reps')}
                         </Button>
                         <Button type="button" variant="outline" onClick={() => addExercise('rest')} className="bg-zinc-900/80 border-zinc-800 hover:bg-zinc-800 hover:border-zinc-600 text-emerald-400/80 hover:text-emerald-400">
-                            <Coffee size={16} className="mr-2" /> Rest
+                            <Coffee size={16} className="mr-2" /> {t('editor.types.rest')}
                         </Button>
                     </div>
                     <Button type="submit" variant="giant" className="w-full bg-white text-black hover:bg-zinc-200 shadow-xl shadow-white/5">
-                        Start Mission
+                        {t('editor.saveMission')}
                     </Button>
                 </div>
             </div>

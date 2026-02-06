@@ -1,0 +1,54 @@
+{
+    "app": {
+        "readyToStart": "Preparado para Empezar",
+        "rounds": "Rondas",
+        "stations": "Estaciones",
+        "getReady": "¡Prepárate!",
+        "startMission": "INICIAR MISIÓN",
+        "editRoutine": "Editar Rutina"
+    },
+    "editor": {
+        "title": "Briefing de la Misión",
+        "missionName": "Nombre de la Misión",
+        "missionNamePlaceholder": "Fuego de tarde...",
+        "rounds": "Rondas",
+        "stations": "Estaciones",
+        "addExercise": "Añadir Ejercicio",
+        "quickAdd": "Acceso Rápido",
+        "types": {
+            "timer": "Tiempo",
+            "reps": "Reps",
+            "rest": "Descanso"
+        },
+        "placeholders": {
+            "exerciseName": "Nombre del Ejercicio...",
+            "duration": "Segundos",
+            "reps": "Reps"
+        },
+        "saveMission": "GUARDAR MISIÓN",
+        "clearAll": "Borrar Todo"
+    },
+    "runner": {
+        "go": "¡DALE!",
+        "paused": "PAUSA",
+        "lastRound": "ÚLTIMA RONDA",
+        "round": "RONDA",
+        "next": "SIGUIENTE",
+        "finish": "TERMINAR",
+        "nextExercise": "Siguiente Ejercicio",
+        "done": "HECHO"
+    },
+    "summary": {
+        "title": "Misión Cumplida",
+        "totalTime": "Tiempo Total",
+        "calories": "Calorías Est.",
+        "avgHeartRate": "Pulsaciones Med.",
+        "backToHQ": "VOLVER AL CG",
+        "stats": "Datos de Rendimiento"
+    },
+    "common": {
+        "cancel": "Cancelar",
+        "delete": "Borrar",
+        "save": "Guardar"
+    }
+}

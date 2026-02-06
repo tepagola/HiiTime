@@ -1,0 +1,54 @@
+{
+    "app": {
+        "readyToStart": "Ready to Start",
+        "rounds": "Rounds",
+        "stations": "Stations",
+        "getReady": "Get Ready!",
+        "startMission": "START MISSION",
+        "editRoutine": "Edit Routine"
+    },
+    "editor": {
+        "title": "Mission Briefing",
+        "missionName": "Mission Name",
+        "missionNamePlaceholder": "Afternoon Blast...",
+        "rounds": "Rounds",
+        "stations": "Stations",
+        "addExercise": "Add Exercise",
+        "quickAdd": "Quick Add",
+        "types": {
+            "timer": "Timer",
+            "reps": "Reps",
+            "rest": "Rest"
+        },
+        "placeholders": {
+            "exerciseName": "Exercise Name...",
+            "duration": "Seconds",
+            "reps": "Reps"
+        },
+        "saveMission": "SAVE MISSION",
+        "clearAll": "Clear All"
+    },
+    "runner": {
+        "go": "GO!",
+        "paused": "PAUSED",
+        "lastRound": "LAST ROUND",
+        "round": "ROUND",
+        "next": "NEXT",
+        "finish": "FINISH",
+        "nextExercise": "Next Exercise",
+        "done": "DONE"
+    },
+    "summary": {
+        "title": "Mission Accomplished",
+        "totalTime": "Total Time",
+        "calories": "Est. Calories",
+        "avgHeartRate": "Avg Heart Rate",
+        "backToHQ": "BACK TO HQ",
+        "stats": "Performance Data"
+    },
+    "common": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "save": "Save"
+    }
+}

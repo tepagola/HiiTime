@@ -7,10 +7,12 @@ import { Summary } from './views/Summary';
 import { usePlanStore } from './stores/usePlanStore';
 import { Button } from './components/ui/button';
 import { Play } from 'lucide-react';
+import { useTranslation } from './lib/i18n';
 
 function App() {
     const { currentPlan, session, startSession, isEditing, editPlan, isNew } = usePlanStore();
     const [isHydrated, setIsHydrated] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         // Wait for both React hydration and Zustand persistence hydration
@@ -40,30 +42,30 @@ function App() {
             return (
                 <div className="flex flex-col items-center justify-center h-full space-y-8 py-12 animate-fade-in">
                     <div className="text-center space-y-2">
-                        <span className="text-sm font-mono uppercase tracking-widest text-brand-accent">Ready to Start</span>
+                        <span className="text-sm font-mono uppercase tracking-widest text-brand-accent">{t('app.readyToStart')}</span>
                         <h2 className="text-4xl font-bold text-white tracking-tight">{currentPlan.name}</h2>
                     </div>
 
                     <div className="space-y-4 w-full">
                         <div className="glass p-6 rounded-2xl flex justify-between items-center border border-white/5 bg-zinc-900/40">
-                            <span className="text-zinc-400 font-medium">Rounds</span>
+                            <span className="text-zinc-400 font-medium">{t('app.rounds')}</span>
                             <span className="text-2xl font-bold font-mono">{currentPlan.rounds}</span>
                         </div>
                         <div className="glass p-6 rounded-2xl flex justify-between items-center border border-white/5 bg-zinc-900/40">
-                            <span className="text-zinc-400 font-medium">Stations</span>
+                            <span className="text-zinc-400 font-medium">{t('app.stations')}</span>
                             <span className="text-2xl font-bold font-mono">{currentPlan.exercises.length}</span>
                         </div>
                         <div className="bg-brand-neon/5 border border-brand-neon/20 p-4 rounded-xl text-center">
-                            <span className="text-brand-neon text-sm font-bold uppercase tracking-widest">Get Ready!</span>
+                            <span className="text-brand-neon text-sm font-bold uppercase tracking-widest">{t('app.getReady')}</span>
                         </div>
                     </div>
 
                     <div className="w-full flex flex-col gap-3">
                         <Button variant="giant" onClick={startSession} className="w-full bg-white text-black hover:bg-zinc-200 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
-                            <Play className="mr-3 h-8 w-8 fill-current" /> <span className="text-xl font-bold tracking-wide">START MISSION</span>
+                            <Play className="mr-3 h-8 w-8 fill-current" /> <span className="text-xl font-bold tracking-wide">{t('app.startMission')}</span>
                         </Button>
                         <Button variant="outline" onClick={editPlan} className="w-full border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 py-4 h-auto">
-                            Edit Routine
+                            {t('app.editRoutine')}
                         </Button>
                     </div>
                 </div>
