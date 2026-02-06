@@ -9,7 +9,7 @@ import { Button } from './components/ui/button';
 import { Play } from 'lucide-react';
 
 function App() {
-    const { currentPlan, session, startSession, isEditing, editPlan } = usePlanStore();
+    const { currentPlan, session, startSession, isEditing, editPlan, isNew } = usePlanStore();
     const [isHydrated, setIsHydrated] = useState(false);
 
     useEffect(() => {
@@ -30,7 +30,8 @@ function App() {
     // Helper to determine view
     const renderView = () => {
         if (!currentPlan || isEditing) {
-            return <PlanEditor />;
+            // Use a key to force re-render when switching plans or start new
+            return <PlanEditor key={isNew ? 'new-mission' : (currentPlan?.id || 'default')} />;
         }
 
         if (!session) {

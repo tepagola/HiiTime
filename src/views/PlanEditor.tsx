@@ -22,12 +22,7 @@ export const PlanEditor = () => {
     const { currentPlan, savePlan, isNew } = usePlanStore();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<FormValues>({
-        defaultValues: {
-            planName: '',
-            rounds: 3,
-            exercises: []
-        },
-        values: isNew ? {
+        defaultValues: isNew ? {
             planName: '',
             rounds: 3,
             exercises: []
