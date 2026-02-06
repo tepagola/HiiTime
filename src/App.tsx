@@ -10,13 +10,22 @@ import { Play } from 'lucide-react';
 
 function App() {
     const { currentPlan, session, startSession, isEditing, editPlan } = usePlanStore();
-    const [isClient, setIsClient] = useState(false);
+    const [isHydrated, setIsHydrated] = useState(false);
 
     useEffect(() => {
-        setIsClient(true);
+        // Wait for both React hydration and Zustand persistence hydration
+        const checkHydration = () => {
+            if (usePlanStore.persist.hasHydrated()) {
+                setIsHydrated(true);
+            } else {
+                // Check again in a bit if not yet hydrated
+                setTimeout(checkHydration, 10);
+            }
+        };
+        checkHydration();
     }, []);
 
-    if (!isClient) return null; // Hydration fix
+    if (!isHydrated) return null; // Wait for storage to be ready
 
     // Helper to determine view
     const renderView = () => {

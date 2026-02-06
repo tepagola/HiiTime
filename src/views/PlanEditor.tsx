@@ -22,7 +22,12 @@ export const PlanEditor = () => {
     const { currentPlan, savePlan, isNew } = usePlanStore();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<FormValues>({
-        defaultValues: isNew ? {
+        defaultValues: {
+            planName: '',
+            rounds: 3,
+            exercises: []
+        },
+        values: isNew ? {
             planName: '',
             rounds: 3,
             exercises: []
@@ -40,9 +45,9 @@ export const PlanEditor = () => {
             planName: '',
             rounds: 3,
             exercises: [
-                { id: crypto.randomUUID(), name: 'Jump Rope', type: 'timer', duration: 45, reps: 0 },
-                { id: crypto.randomUUID(), name: 'Burpees', type: 'timer', duration: 30, reps: 0 },
-                { id: crypto.randomUUID(), name: 'Rest', type: 'rest', duration: 15, reps: 0 },
+                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Jump Rope', type: 'timer', duration: 45, reps: 0 },
+                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Burpees', type: 'timer', duration: 30, reps: 0 },
+                { id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)), name: 'Rest', type: 'rest', duration: 15, reps: 0 },
             ]
         })
     });
@@ -54,7 +59,7 @@ export const PlanEditor = () => {
 
     const onSubmit = (data: FormValues) => {
         const plan: Plan = {
-            id: currentPlan?.id || crypto.randomUUID(),
+            id: currentPlan?.id || (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)),
             name: data.planName,
             rounds: data.rounds,
             createdAt: currentPlan?.createdAt || Date.now(),
@@ -72,7 +77,7 @@ export const PlanEditor = () => {
 
     const addExercise = (type: ExerciseType) => {
         append({
-            id: crypto.randomUUID(),
+            id: (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9)),
             name: type === 'rest' ? 'Rest' : 'New Exercise',
             type,
             duration: type === 'rest' ? 30 : 45,
