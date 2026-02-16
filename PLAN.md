@@ -72,7 +72,52 @@ Defined in `src/types/models.ts`:
     *   Menú/Modal "Cargar Misión" con lista de rutinas guardadas.
     *   Confirmación de reemplazo.
 
-### Fase 6: PWA & Calidad (Basado en QA Report)
+### Fase 7: PWA & Calidad (Basado en QA Report)
 *   Fix manifest and service worker.
 *   SEO meta tags.
 *   A11y improvements.
+
+### Fase 8: Bloqueo de Pantalla (Screen Wake Lock) - [PENDIENTE]
+**Objetivo:** Evitar que la pantalla del dispositivo se apague o entre en modo reposo durante la ejecución del entrenamiento, lo cual es crítico para que el usuario pueda ver el tiempo restante y el siguiente ejercicio sin tener que tocar el dispositivo con las manos sudadas.
+
+*   **Implementación Técnica:**
+    *   Utilizar la **Screen Wake Lock API** nativa del navegador (`navigator.wakeLock`).
+    *   Crear un hook personalizado o servicio (`useWakeLock` o `WakeLockManager`) para gestionar el ciclo de vida.
+*   **Comportamiento:**
+    *   **Activar (Request):** Automáticamente cuando el cronómetro comienza a correr ("Play").
+    *   **Desactivar (Release):** Automáticamente cuando el entrenamiento se pausa, se termina, o el usuario navega fuera de la vista de ejecución.
+    *   **Recuperación:** Gestionar la re-adquisición del bloqueo si la app pierde el foco (ej. cambio de pestaña) y lo recupera, o si el bloqueo es liberado por el sistema por batería baja.
+*   **UX/UI:**
+    *   No requiere interfaz compleja, es una mejora "invisible" pero vital.
+    *   Opcional: Un pequeño icono en la interfaz de "Runner" que indique si la pantalla está bloqueada (fija), o un mensaje de error (toast) si el navegador no soporta la API o falla la solicitud (batería baja).
+
+### Fase 9: Estructura Completa de Entrenamiento (Warm-up & Cooldown) - [PENDIENTE]
+**Objetivo:** Profesionalizar la estructura de las rutinas permitiendo fases de "Calentamiento" y "Vuelta a la Calma" que se ejecuten una única vez, diferenciándolas del "Núcleo" del entrenamiento (el circuito) que sí se repite por vueltas (Rounds).
+
+*   **Cambios en Modelo de Datos (`Plan`):**
+    *   Extender la interfaz `Plan` para soportar estructuras más complejas.
+    *   Actual:
+        ```typescript
+        { exercises: Exercise[], rounds: number }
+        ```
+    *   Nuevo:
+        ```typescript
+        {
+          warmup: Exercise[], // Se ejecuta 1 vez al inicio
+          exercises: Exercise[], // Circuito principal (se repite N rounds)
+          cooldown: Exercise[], // Se ejecuta 1 vez al final
+          rounds: number // Aplica solo a 'exercises'
+        }
+        ```
+*   **Editor de Rutinas:**
+    *   **Secciones Visuales:** Dividir la lista de ejercicios en tres bloques claros:
+        1.  **Calentamiento (Opcional):** Lista colapsable o separada.
+        2.  **Circuito Principal:** La lista actual, donde aplica el selector de "Rounds".
+        3.  **Enfriamiento (Opcional):** Lista al final.
+    *   Permitir arrastrar y soltar ejercicios entre secciones (si es posible) o botones específicos de "Añadir a Calentamiento".
+*   **Modo Entrenamiento (Runner):**
+    *   **Lógica de Secuencia:** Actualizar la máquina de estados para seguir el flujo: `Warmup -> (Circuito * Rounds) -> Cooldown`.
+    *   **Indicadores Visuales:**
+        *   Mostrar claramente la fase actual: "CALENTAMIENTO", "RONDA X/Y", "ENFRIAMIENTO".
+        *   Diferenciar visualmente (quizás con un cambio sutil de color de fondo o etiqueta) cuando se está fuera del circuito principal.
+        *   El progreso total debe reflejar la suma de todos los ejercicios de todas las fases.
