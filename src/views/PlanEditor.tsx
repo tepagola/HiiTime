@@ -126,7 +126,7 @@ export const PlanEditor = () => {
                 planToSave={pendingPlan}
             />
 
-            <div className="flex justify-end gap-2 mb-4 items-center mt-12">
+            <div className="flex justify-end gap-2 mb-4 items-center md:mt-12">
                 {showSavedNotification && (
                     <span className="text-brand-neon text-sm font-bold uppercase tracking-widest animate-in fade-in slide-in-from-right-4 mr-2">
                         {t('app.saved')}
