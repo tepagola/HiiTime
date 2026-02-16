@@ -5,7 +5,18 @@
         "stations": "Stations",
         "getReady": "Get Ready!",
         "startMission": "START MISSION",
-        "editRoutine": "Edit Routine"
+        "editRoutine": "Edit Routine",
+        "load": "Load Mission",
+        "save": "Save Mission",
+        "saved": "SAVED!",
+        "myMissions": "My Missions",
+        "storageFull": "Storage Full",
+        "storageFullDesc": "You have 10 saved missions. Select one to replace.",
+        "noSavedPlans": "No saved missions.",
+        "confirmDelete": "Are you sure you want to delete this mission?",
+        "slots": "Slots Used",
+        "selectToReplace": "Select to Replace",
+        "exercises": "Exer."
     },
     "editor": {
         "title": "Mission Briefing",

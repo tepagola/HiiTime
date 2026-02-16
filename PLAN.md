@@ -1,13 +1,13 @@
 # PLAN.md - HiiTime
 
-## 1. Visión del Producto
+## 1. Visión del Producto - [COMPLETADO]
 Aplicación web simple (SPA) para gestionar y ejecutar rutinas de entrenamiento HIIT/Tabata/Circuitos sin distracciones.
 **Problema:** Las apps actuales son complejas, requieren interacción constante o no manejan bien la mezcla de tiempo/repeticiones.
 **Solución:** Una interfaz limpia que guía al usuario ejercicio por ejercicio con un cronómetro y persistencia automática del estado actual.
 
 ## 2. MVP (Producto Mínimo Viable)
 
-### Funcionalidades Core
+### Funcionalidades Core - [COMPLETADO]
 1.  **Creador de Rutinas**:
     *   Añadir ejercicios a una lista.
     *   Tipos de ejercicio:
@@ -28,7 +28,7 @@ Aplicación web simple (SPA) para gestionar y ejecutar rutinas de entrenamiento 
 *   **Datos**: No backend. Todo en `localStorage`.
 *   **Diseño**: Mobile-first, botones grandes, alto contraste.
 
-## 3. Arquitectura (Definida por @backend-architect)
+## 3. Arquitectura (Definida por @backend-architect) - [COMPLETADO]
 
 ### Modelo de Datos (TypeScript + Zod)
 Defined in `src/types/models.ts`:
@@ -55,11 +55,22 @@ Defined in `src/types/models.ts`:
 
 ## 5. Próximas Fases (En desarrollo)
 
-### Fase 5: Internacionalización (EN/ES) - [ACTUAL]
+### Fase 5: Internacionalización (EN/ES) - [COMPLETADO]
 *   **Detección Automática**: Lógica para identificar el idioma del navegador/país y establecer ES/EN por defecto.
 *   **Selector Manual**: Componente en la UI para cambiar entre idiomas.
 *   **Traducciones**: Migración de todos los textos hardcoded a un sistema de claves.
 *   **Persistencia**: Guardar la preferencia en `localStorage`.
+
+### Fase 6: Gestión de Misiones (Guardado Local) - [COMPLETADO]
+*   **Almacenamiento**: Persistencia de hasta 10 rutinas (planes) en `localStorage` (o IndexedDB abstraída).
+*   **Lógica de Negocio**:
+    *   Guardar rutina actual en lista "Mis Misiones".
+    *   Límite de 10 slots.
+    *   Si lleno (10/10) -> UI para sobreescribir/reemplazar una existente.
+*   **UI**:
+    *   Botón "Guardar Misión".
+    *   Menú/Modal "Cargar Misión" con lista de rutinas guardadas.
+    *   Confirmación de reemplazo.
 
 ### Fase 6: PWA & Calidad (Basado en QA Report)
 *   Fix manifest and service worker.

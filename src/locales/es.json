@@ -5,7 +5,18 @@
         "stations": "Estaciones",
         "getReady": "¡Prepárate!",
         "startMission": "INICIAR MISIÓN",
-        "editRoutine": "Editar Rutina"
+        "editRoutine": "Editar Rutina",
+        "load": "Cargar Misión",
+        "save": "Guardar Misión",
+        "saved": "¡GUARDADO!",
+        "myMissions": "Mis Misiones",
+        "storageFull": "Almacenamiento Lleno",
+        "storageFullDesc": "Tienes 10 misiones guardadas. Selecciona una para reemplazarla.",
+        "noSavedPlans": "No tienes misiones guardadas.",
+        "confirmDelete": "¿Estás seguro de que quieres borrar esta misión?",
+        "slots": "Ranuras ocupadas",
+        "selectToReplace": "Elige una para sustituir",
+        "exercises": "Ejer."
     },
     "editor": {
         "title": "Briefing de la Misión",
