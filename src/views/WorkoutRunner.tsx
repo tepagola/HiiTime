@@ -5,11 +5,22 @@ import { Play, Pause, SkipForward, CheckCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { soundManager } from '../lib/sounds';
 import { useTranslation } from '../lib/i18n';
+import { useWakeLock } from '../hooks/useWakeLock';
 
 export const WorkoutRunner = () => {
     const { currentPlan, session, updateSession } = usePlanStore();
     const [timeLeft, setTimeLeft] = useState(0);
     const { t } = useTranslation();
+    const { request: requestWakeLock, release: releaseWakeLock } = useWakeLock();
+
+    // Manage Screen Wake Lock
+    useEffect(() => {
+        if (session?.isActive && !session?.isPaused) {
+            requestWakeLock();
+        } else {
+            releaseWakeLock();
+        }
+    }, [session?.isActive, session?.isPaused, requestWakeLock, releaseWakeLock]);
 
     // Refs for preventing double-fires if strict mode is on
     const timerRef = useRef<number | undefined>(undefined);

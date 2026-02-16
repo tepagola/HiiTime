@@ -77,7 +77,7 @@ Defined in `src/types/models.ts`:
 *   SEO meta tags.
 *   A11y improvements.
 
-### Fase 8: Bloqueo de Pantalla (Screen Wake Lock) - [PENDIENTE]
+### Fase 8: Bloqueo de Pantalla (Screen Wake Lock) - [COMPLETADO]
 **Objetivo:** Evitar que la pantalla del dispositivo se apague o entre en modo reposo durante la ejecución del entrenamiento, lo cual es crítico para que el usuario pueda ver el tiempo restante y el siguiente ejercicio sin tener que tocar el dispositivo con las manos sudadas.
 
 *   **Implementación Técnica:**
