@@ -8,11 +8,35 @@ import { usePlanStore } from './stores/usePlanStore';
 import { Button } from './components/ui/button';
 import { Play } from 'lucide-react';
 import { useTranslation } from './lib/i18n';
+import { soundManager } from './lib/sounds';
 
 function App() {
     const { currentPlan, session, startSession, isEditing, editPlan, isNew } = usePlanStore();
     const [isHydrated, setIsHydrated] = useState(false);
     const { t } = useTranslation();
+
+    // Countdown state
+    const [isStarting, setIsStarting] = useState(false);
+    const [countdown, setCountdown] = useState(3);
+
+    useEffect(() => {
+        let interval: ReturnType<typeof setInterval>;
+        if (isStarting && countdown > 0) {
+            soundManager.playTick();
+            interval = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        } else if (isStarting && countdown === 0) {
+            setIsStarting(false);
+            startSession();
+            setCountdown(3); // Reset for next time
+        }
+        return () => clearInterval(interval);
+    }, [isStarting, countdown, startSession]);
+
+    const handleStart = () => {
+        setIsStarting(true);
+    };
 
     useEffect(() => {
         // Wait for both React hydration and Zustand persistence hydration
@@ -40,7 +64,21 @@ function App() {
             // Plan exists but session not started. Show "Ready" screen or reuse Editor in read-only?
             // MVP: Show "Ready to Start" with big button.
             return (
-                <div className="flex flex-col items-center justify-center h-full space-y-8 py-12 animate-fade-in">
+                <div className="flex flex-col items-center justify-center h-full space-y-8 py-12 animate-fade-in relative">
+                    {/* Countdown Overlay */}
+                    {isStarting && (
+                        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-3xl animate-in fade-in duration-300">
+                            <div className="text-center">
+                                <span className="text-[12rem] font-black italic text-brand-neon tabular-nums leading-none tracking-tighter animate-pulse">
+                                    {countdown}
+                                </span>
+                                <div className="text-2xl text-white font-bold uppercase tracking-[0.5em] mt-4 text-center w-full">
+                                    {t('app.getReady')}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="text-center space-y-2">
                         <span className="text-sm font-mono uppercase tracking-widest text-brand-accent">{t('app.readyToStart')}</span>
                         <h2 className="text-4xl font-bold text-white tracking-tight">{currentPlan.name}</h2>
@@ -61,7 +99,7 @@ function App() {
                     </div>
 
                     <div className="w-full flex flex-col gap-3">
-                        <Button variant="giant" onClick={startSession} className="w-full bg-white text-black hover:bg-zinc-200 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                        <Button variant="giant" onClick={handleStart} className="w-full bg-white text-black hover:bg-zinc-200 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
                             <Play className="mr-3 h-8 w-8 fill-current" /> <span className="text-xl font-bold tracking-wide">{t('app.startMission')}</span>
                         </Button>
                         <Button variant="outline" onClick={editPlan} className="w-full border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 py-4 h-auto">
