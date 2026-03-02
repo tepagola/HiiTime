@@ -15,12 +15,12 @@ export const WorkoutRunner = () => {
 
     // Manage Screen Wake Lock
     useEffect(() => {
-        if (session?.isActive && !session?.isPaused) {
+        if (session?.isActive) {
             requestWakeLock();
         } else {
             releaseWakeLock();
         }
-    }, [session?.isActive, session?.isPaused, requestWakeLock, releaseWakeLock]);
+    }, [session?.isActive, requestWakeLock, releaseWakeLock]);
 
     // Refs for preventing double-fires if strict mode is on
     const timerRef = useRef<number | undefined>(undefined);
